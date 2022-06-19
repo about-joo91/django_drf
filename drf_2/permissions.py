@@ -8,5 +8,4 @@ class IsAfterThreeDaysFromJoined(BasePermission):
     """
 
     def has_permission(self, request, view):
-        print()
         return bool(dt.datetime.now(utc) - request.user.created_at >= dt.timedelta(days=3))
