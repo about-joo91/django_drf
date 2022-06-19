@@ -5,10 +5,14 @@ from django.contrib.auth import login, authenticate, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from .serializers import UserSerializer
 
 # Create your views here.
 
 class UserView(APIView):
+    def get(self, request):
+        return Response(UserSerializer(request.user).data)
+
     def post(self, request):
         username = request.data.get('username', '')
         password = request.data.get('password', '')

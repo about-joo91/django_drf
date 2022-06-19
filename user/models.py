@@ -1,4 +1,3 @@
-from turtle import ondrag
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
@@ -28,7 +27,7 @@ class UserModel(AbstractBaseUser):
     email = models.EmailField('email',max_length=128)
     full_name = models.CharField('fullname', max_length=20)
     
-    created_at = models.DateField('created_at', auto_now_add=True)
+    created_at = models.DateTimeField('created_at', auto_now_add=True)
     updated_at = models.DateField('updated_at', auto_now=True)
 
     is_active = models.BooleanField(default=True)
@@ -55,6 +54,6 @@ class UserModel(AbstractBaseUser):
         return self.is_admin
 
 class UserProfile(models.Model):
-    user = models.ForeignKey('UserModel', on_delete=models.CASCADE)
+    user = models.OneToOneField('UserModel', on_delete=models.CASCADE)
     bio = models.TextField()
     age = models.IntegerField()

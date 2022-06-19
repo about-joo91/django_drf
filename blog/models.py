@@ -8,7 +8,11 @@ class Category(models.Model):
 class Article(models.Model):
     author = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True)
     title = models.CharField('title', max_length=100)
-    content = models.TextField()
+    contents = models.TextField()
     category = models.ManyToManyField('Category')
 
-
+class Comment(models.Model):
+    author = models.ForeignKey(UserModel,on_delete=models.SET_NULL, null=True)
+    article = models.ForeignKey('Article',on_delete=models.CASCADE)
+    contents = models.TextField()
+    
