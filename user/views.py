@@ -28,18 +28,13 @@ class UserView(APIView):
 
 class UserControlView(APIView):
     def post(self,request):
-        username = request.data.get('username','')
-        password = request.data.get('password','')
-        email = request.data.get('email','')
-        bio = request.data.get('bio','')
-        full_name = request.data.get('full_name','')
-        age = request.data.get('age','')
+        password = request.data.pop("password")
+        bio = request.data.pop("bio")
+        age = request.data.pop("age")
         new_user = UserModel.objects.create(
-            username = username,
-            password = hashers.make_password(password),
-            email = email,
-            full_name = full_name
+            **request.data
         )
+        new_user.set_password(password)
         new_user.save()
         user_profile = UserProfile.objects.create(
             user = new_user,

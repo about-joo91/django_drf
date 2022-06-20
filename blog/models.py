@@ -1,3 +1,4 @@
+import datetime as dt
 from django.db import models
 from user.models import UserModel
 # Create your models here.
@@ -10,6 +11,8 @@ class Article(models.Model):
     title = models.CharField('title', max_length=100)
     contents = models.TextField()
     category = models.ManyToManyField('Category')
+    start_of_exposed_day = models.DateField(auto_now_add=True)
+    end_of_exposed_day = models.DateField(default=(dt.date.today() + dt.timedelta(days=7)))
 
 class Comment(models.Model):
     author = models.ForeignKey(UserModel,on_delete=models.SET_NULL, null=True)

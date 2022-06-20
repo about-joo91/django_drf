@@ -25,9 +25,9 @@ class UserModel(AbstractBaseUser):
     username = models.CharField('username' , max_length=20, unique=True)
     password  = models.CharField('password', max_length=128)
     email = models.EmailField('email',max_length=128)
-    full_name = models.CharField('fullname', max_length=20)
+    fullname = models.CharField('fullname', max_length=20)
     
-    created_at = models.DateTimeField('created_at', auto_now_add=True)
+    join_date = models.DateTimeField('created_at', auto_now_add=True)
     updated_at = models.DateField('updated_at', auto_now=True)
 
     is_active = models.BooleanField(default=True)
@@ -57,3 +57,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField('UserModel', on_delete=models.CASCADE)
     bio = models.TextField()
     age = models.IntegerField()
+    hobby = models.ManyToManyField('Hobby')
+
+
+class Hobby(models.Model):
+    hobby_name = models.CharField(max_length=30)

@@ -1,22 +1,28 @@
 import json
+import datetime as dt
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from .models import Article, Category
-from drf_2.permissions import IsAfterThreeDaysFromJoined
+from drf_2.permissions import IsAdminOrAfterSevenDaysFromJoined
 # Create your views here.
 
 class ArticleView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrAfterSevenDaysFromJoined]
     def get(self, request):
         cur_user = request.user
-        articles = Article.objects.filter(author = cur_user)
-        titles = [article.title for article in articles]
+        articles = Article.objects.filter(
+            author = cur_user
+            ).filter(
+                start_of_exposed_day__lte = dt.date.today()
+                ).filter(
+                    end_of_exposed_day__gte = dt.date.today()
+                    ).order_by('-start_of_exposed_day')
+        titles = [{"title":article.title,"start_of_exposed_day":article.start_of_exposed_day, "end_of_exposed_day": article.end_of_exposed_day} for article in articles]
         return Response({
             "titles" : titles
         })
-    permission_classes = [IsAfterThreeDaysFromJoined]
     def post(self, request):
         
         title = request.data.get('title','')
