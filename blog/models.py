@@ -18,4 +18,3 @@ class Comment(models.Model):
     author = models.ForeignKey(UserModel,on_delete=models.SET_NULL, null=True)
     article = models.ForeignKey('Article',on_delete=models.CASCADE)
     contents = models.TextField()
-    

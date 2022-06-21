@@ -23,7 +23,7 @@ class IsAdminOrAfterSevenDaysFromJoined(BasePermission):
                 "detail" : "서비스를 이용하기 위해 로그인 해주세요."
             }
             raise GenericAPIException(status_code=status.HTTP_401_UNAUTHORIZED,detail=response)
-        if bool(dt.datetime.now(utc) - user.created_at >= dt.timedelta(days=7)) or user.is_admin:
+        if bool(dt.datetime.now(utc) - user.join_date >= dt.timedelta(days=7)) or user.is_admin:
             return True
         if user.is_authenticated and request.method in self.SAFE_METHODS:
             return True

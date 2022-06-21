@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'user',
-    'blog'
+    'blog',
+    'product',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,6 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser'
     ]
 }
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = Path.joinpath(BASE_DIR, 'media')

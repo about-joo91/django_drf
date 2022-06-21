@@ -28,23 +28,11 @@ class UserView(APIView):
 
 class UserControlView(APIView):
     def post(self,request):
-        password = request.data.pop("password")
-        bio = request.data.pop("bio")
-        age = request.data.pop("age")
-        new_user = UserModel.objects.create(
-            **request.data
-        )
-        new_user.set_password(password)
-        new_user.save()
-        user_profile = UserProfile.objects.create(
-            user = new_user,
-            bio=bio,
-            age = age
-        )
-        user_profile.save()
-        return Response({
-            "message" : "회원가입 완료"
-        })
+        user_serializer = UserSerializer(data=request.data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(user_serializer.data, status.HTTP_200_OK)
+        return Response(user_serializer.errors, status.HTTP_400_BAD_REQUEST)
     def delete(self, request):
         cur_user = request.user
         cur_user.delete()
