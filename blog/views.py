@@ -42,18 +42,7 @@ class ArticleView(APIView):
         # contents = request.data.get('contents','')
         # categories = json.loads(categories)
 
-        # if len(title) < 6:
-        #     return Response({
-        #         "error": "제목이 5글자 이하면 작성할 수 없습니다."
-        #     })
-        # if len(contents) < 21:
-        #     return Response({
-        #         "error": "내용이 20글자 이하면 작성할 수 없습니다."
-        #     })
-        # if categories == '':
-        #     return Response({
-        #         "error": "카테고리가 비어 있습니다."
-        #     })
+ 
         # categories = [Category.objects.get(cate_name = cate_name) for cate_name in categories]
         # new_article = Article.objects.create(
         #     author = request.user,

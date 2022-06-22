@@ -5,19 +5,21 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
 
-from .serializers import ProductSerializer,UserBaseProductSerializer
+from .permissions import ProductIsAuthenticatedORAfterThreeDaysFromJoin
+from .serializers import ProductSerializer
 from .models import Product
 # Create your views here.
 TODAY = dt.datetime.now(gettz('Asia/Seoul')).date()
 class ProductView(APIView):
+    permission_classes = [ProductIsAuthenticatedORAfterThreeDaysFromJoin]
     def get(self, request):
         user = request.user
-        # products = Product.objects.filter(
-        #     Q(exposure_start_date__lte = TODAY, exposure_end_date = TODAY) |
-        #     Q(author = user)
-        # )
-        # return Response(ProductSerializer(products, many=True).data, status=status.HTTP_200_OK)
-        return Response(UserBaseProductSerializer(user).data, status=status.HTTP_200_OK)    
+        products = Product.objects.filter(
+            Q(exposure_end_date__gte = TODAY, is_active = True) |
+            Q(author = user)
+        )
+        return Response(ProductSerializer(products, many=True).data, status=status.HTTP_200_OK)
+        # return Response(UserBaseProductSerializer(user).data, status=status.HTTP_200_OK)    
     def post(self, request):
         user = request.user
         request.data['author'] = user.id

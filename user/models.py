@@ -27,7 +27,7 @@ class UserModel(AbstractBaseUser):
     email = models.EmailField('email',max_length=128)
     fullname = models.CharField('fullname', max_length=20)
     
-    join_date = models.DateTimeField('created_at', auto_now_add=True)
+    join_date = models.DateField('created_at', auto_now_add=True)
     updated_at = models.DateField('updated_at', auto_now=True)
 
     is_active = models.BooleanField(default=True)
